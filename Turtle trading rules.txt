@@ -15,9 +15,9 @@ var TTManager = {
         var symbolDetail = _C(exchange.SetContractType, symbol);
         if (symbolDetail.VolumeMultiple == 0 || symbolDetail.MaxLimitOrderVolume == 0 || symbolDetail.MinLimitOrderVolume == 0 || symbolDetail.LongMarginRatio == 0 || symbolDetail.ShortMarginRatio == 0) {
             Log(symbolDetail);
-            throw "ºÏÔ¼ÐÅÏ¢Òì³£";
+            throw "";
         } else {
-            Log("ºÏÔ¼", symbolDetail.InstrumentName, "Ò»ÊÖ", symbolDetail.VolumeMultiple, "·Ý, ×î´óÏÂµ¥Á¿", symbolDetail.MaxLimitOrderVolume, "±£Ö¤½ðÂÊ:", _N(symbolDetail.LongMarginRatio), _N(symbolDetail.ShortMarginRatio), "½»¸îÈÕÆÚ", symbolDetail.StartDelivDate);
+            Log("", symbolDetail.InstrumentName, ", symbolDetail.VolumeMultiple, ", symbolDetail.MaxLimitOrderVolume, :", _N(symbolDetail.LongMarginRatio), _N(symbolDetail.ShortMarginRatio),, symbolDetail.StartDelivDate);
         }
 
         var ACT_IDLE = 0;
@@ -33,7 +33,7 @@ var TTManager = {
         var ERR_TRADE = 4;
         var ERR_GET_DEPTH = 5;
         var ERR_NOT_TRADING = 6;
-        var errMsg = ["³É¹¦", "ÇÐ»»ºÏÔ¼Ê§°Ü", "»ñÈ¡¶©µ¥Ê§°Ü", "»ñÈ¡³Ö²ÖÊ§°Ü", "½»Ò×ÏÂµ¥Ê§°Ü", "»ñÈ¡Éî¶ÈÊ§°Ü", "²»ÔÚ½»Ò×Ê±¼ä"];
+        var errMsg = ["];
 
         var obj = {
             symbol: symbol,
@@ -57,7 +57,7 @@ var TTManager = {
             preAmount: 0,
             init: false,
             retry: 0,
-            desc: "¿ÕÏÐ",
+            desc: "",
             onFinish: null
         }
         obj.maxLots = maxLots;
@@ -107,11 +107,11 @@ var TTManager = {
                 if (pos) {
                     obj.holdPrice = pos.Price;
                     obj.holdAmount = pos.Amount;
-                    Log(obj.symbol, "²ÖÎ»", pos);
+                    Log(obj.symbol, "", pos);
                 } else {
-                    throw "»Ö¸´" + obj.symbol + "µÄ³Ö²Ö×´Ì¬³ö´í, Ã»ÓÐÕÒµ½²ÖÎ»ÐÅÏ¢";
+                    throw " + obj.symbol + ";
                 }
-                Log("»Ö¸´", obj.symbol, "¼Ó²Ö´ÎÊý", obj.marketPosition, "³Ö²Ö¾ù¼Û:", obj.holdPrice, "³Ö²ÖÊýÁ¿:", obj.holdAmount, "×îºóÒ»´Î¼Ó²Ö¼Û", obj.openPrice, "NÖµ", obj.N, "ÀëÊÐÖÜÆÚ:", leavePeriod, "ÉÏ´ÎÍ»ÆÆ:", obj.preBreakoutFailure ? "Ê§°Ü" : "³É¹¦");
+                Log("", obj.symbol, "", obj.marketPosition, ":", obj.holdPrice, ":", obj.holdAmount, ", obj.openPrice, ", obj.N, "", leavePeriod, ":", obj.preBreakoutFailure ? "");
                 obj.status.open = 1;
                 obj.status.vm = [obj.marketPosition, obj.openPrice, obj.N, obj.leavePeriod, obj.preBreakoutFailure];
             } else {
@@ -151,15 +151,14 @@ var TTManager = {
             obj.task.amount = typeof(amount) === 'number' ? amount : 0;
             obj.task.onFinish = onFinish;
             if (action == ACT_IDLE) {
-                obj.task.desc = "¿ÕÏÐ";
-                obj.task.onFinish = null;
+                obj.task.desc = ll;
             } else {
                 if (action !== ACT_COVER) {
-                    obj.task.desc = (action == ACT_LONG ? "¼Ó¶à²Ö" : "¼Ó¿Õ²Ö") + "(" + amount + ")";
+                    obj.task.desc = (action == ACT_LONG ? ") + "(" + amount + ")";
                 } else {
-                    obj.task.desc = "Æ½²Ö";
+                    obj.task.desc = "";
                 }
-                Log("½ÓÊÕµ½ÈÎÎñ", obj.symbol, obj.task.desc);
+                Log(", obj.symbol, obj.task.desc);
                 // process immediately
                 obj.Poll(true);
             }
@@ -194,11 +193,11 @@ var TTManager = {
                         var amount = Math.min(insDetail.MaxLimitOrderVolume, positions[i].Amount);
                         if (positions[i].Type == PD_LONG || positions[i].Type == PD_LONG_YD) {
                             exchange.SetDirection(positions[i].Type == PD_LONG ? "closebuy_today" : "closebuy");
-                            orderId = exchange.Sell(_N(depth.Bids[0].Price - (insDetail.PriceTick * SlideTick), 2), Math.min(amount, depth.Bids[0].Amount), obj.symbol, positions[i].Type == PD_LONG ? "Æ½½ñ" : "Æ½×ò", 'Bid', depth.Bids[0]);
+                            orderId = exchange.Sell(_N(depth.Bids[0].Price - (insDetail.PriceTick * SlideTick), 2), Math.min(amount, depth.Bids[0].Amount), obj.symbol, positions[i].Type == PD_LONG ? ", 'Bid', depth.Bids[0]);
                             hasPosition = true;
                         } else if (positions[i].Type == PD_SHORT || positions[i].Type == PD_SHORT_YD) {
                             exchange.SetDirection(positions[i].Type == PD_SHORT ? "closesell_today" : "closesell");
-                            orderId = exchange.Buy(_N(depth.Asks[0].Price + (insDetail.PriceTick * SlideTick), 2), Math.min(amount, depth.Asks[0].Amount), obj.symbol, positions[i].Type == PD_SHORT ? "Æ½½ñ" : "Æ½×ò", 'Ask', depth.Asks[0]);
+                            orderId = exchange.Buy(_N(depth.Asks[0].Price + (insDetail.PriceTick * SlideTick), 2), Math.min(amount, depth.Asks[0].Amount), obj.symbol, positions[i].Type == PD_SHORT ? "", 'Ask', depth.Asks[0]);
                             hasPosition = true;
                         }
                     }
@@ -324,7 +323,7 @@ var TTManager = {
             if (obj.task.action != ACT_IDLE) {
                 var retCode = obj.processTask();
                 if (obj.task.action != ACT_IDLE) {
-                    obj.setLastError("ÈÎÎñÃ»ÓÐ´¦Àí³É¹¦: " + errMsg[retCode] + ", " + obj.task.desc + ", ÖØÊÔ: " + obj.task.retry);
+                    obj.setLastError(": " + errMsg[retCode] + ", " + obj.task.desc + ", : " + obj.task.retry);
                 } else {
                     obj.setLastError();
                 }
@@ -339,12 +338,12 @@ var TTManager = {
             _C(exchange.SetContractType, obj.symbol);
             var records = exchange.GetRecords();
             if (!records) {
-                obj.setLastError("»ñÈ¡KÏßÊ§°Ü");
+                obj.setLastError("");
                 return;
             }
             obj.status.recordsLen = records.length;
             if (records.length < obj.atrLen) {
-                obj.setLastError("KÏß³¤¶ÈÐ¡ÓÚ " + obj.atrLen);
+                obj.setLastError(" " + obj.atrLen);
                 return;
             }
             var opCode = 0; // 0: IDLE, 1: LONG, 2: SHORT, 3: CoverALL
@@ -383,7 +382,7 @@ var TTManager = {
                 if (spread > (obj.N * StopLossRatio)) {
                     opCode = 3;
                     obj.preBreakoutFailure = true;
-                    Log(obj.symbolDetail.InstrumentName, "Ö¹ËðÆ½²Ö", suffix);
+                    Log(obj.symbolDetail.InstrumentName, "", suffix);
                     obj.status.st++;
                 } else if (-spread > (IncSpace * obj.N)) {
                     opCode = obj.marketPosition > 0 ? 1 : 2;
@@ -393,7 +392,7 @@ var TTManager = {
                     if ((obj.marketPosition > 0 && lastPrice < obj.status.leavePrice) ||
                         (obj.marketPosition < 0 && lastPrice > obj.status.leavePrice)) {
                         obj.preBreakoutFailure = false;
-                        Log(obj.symbolDetail.InstrumentName, "Õý³£Æ½²Ö", suffix);
+                        Log(obj.symbolDetail.InstrumentName, ", suffix);
                         opCode = 3;
                         obj.status.cover++;
                     }
@@ -412,7 +411,7 @@ var TTManager = {
             }
             // Open
             if (Math.abs(obj.marketPosition) >= obj.maxLots) {
-                obj.setLastError("½ûÖ¹¿ª²Ö, ³¬¹ý×î´ó³Ö²Ö " + obj.maxLots);
+                obj.setLastError(" " + obj.maxLots);
                 return;
             }
             var atrs = TA.ATR(records, atrLen);
@@ -424,15 +423,15 @@ var TTManager = {
             var canOpen = parseInt((account.Balance-obj.keepBalance) / (opCode == 1 ? obj.symbolDetail.LongMarginRatio : obj.symbolDetail.ShortMarginRatio) / (lastPrice * 1.2) / obj.symbolDetail.VolumeMultiple);
             unit = Math.min(unit, canOpen);
             if (unit < obj.symbolDetail.MinLimitOrderVolume) {
-                obj.setLastError("¿É¿ª " + unit + " ÊÖ ÎÞ·¨¿ª²Ö, " + (canOpen >= obj.symbolDetail.MinLimitOrderVolume ? "·ç¿Ø´¥·¢" : "×Ê½ðÏÞÖÆ"));
+                obj.setLastError(" " + (canOpen >= obj.symbolDetail.MinLimitOrderVolume ? "));
                 return;
             }
             obj.setTask((opCode == 1 ? ACT_LONG : ACT_SHORT), unit, function(ret) {
                 if (!ret) {
-                    obj.setLastError("ÏÂµ¥Ê§°Ü");
+                    obj.setLastError("");
                     return;
                 }
-                Log(obj.symbolDetail.InstrumentName, obj.marketPosition == 0 ? "¿ª²Ö" : "¼Ó²Ö", "ÀëÊÐÖÜÆÚ", obj.leavePeriod, suffix);
+                Log(obj.symbolDetail.InstrumentName, obj.marketPosition == 0 ? , obj.leavePeriod, suffix);
                 obj.N = N;
                 obj.openPrice = ret.price;
                 obj.holdPrice = ret.position.Price;
@@ -452,11 +451,11 @@ var TTManager = {
             vm = JSON.parse(VMStatus)[obj.symbol];
         }
         if (vm) {
-            Log("×¼±¸»Ö¸´½ø¶È, µ±Ç°ºÏÔ¼×´Ì¬Îª", vm);
+            Log(", vm);
             obj.reset(vm[0], vm[1], vm[2], vm[3], vm[4]);
         } else {
             if (needRestore) {
-                Log("Ã»ÓÐÕÒµ½" + obj.symbol + "µÄ½ø¶È»Ö¸´ÐÅÏ¢");
+                Log("");
             }
             obj.reset();
         }
@@ -465,32 +464,32 @@ var TTManager = {
 };
 
 function onexit() {
-    Log("ÒÑÍË³ö²ßÂÔ...");
+    Log("..");
 }
 
 function main() {
     if (exchange.GetName().indexOf('CTP') == -1) {
-        throw "Ö»Ö§³ÖÉÌÆ·ÆÚ»õCTP";
+        throw "
     }
-    SetErrorFilter("login|ready|Á÷¿Ø|Á¬½ÓÊ§°Ü|³õÊ¼|Timeout");
+    SetErrorFilter("login|ready|;
     var mode = exchange.IO("mode", 0);
     if (typeof(mode) !== 'number') {
-        throw "ÇÐ»»Ä£Ê½Ê§°Ü, Çë¸üÐÂµ½×îÐÂÍÐ¹ÜÕß!";
+        throw "
     }
     while (!exchange.IO("status")) {
         Sleep(3000);
-        LogStatus("ÕýÔÚµÈ´ýÓë½»Ò×·þÎñÆ÷Á¬½Ó, " + new Date());
+        LogStatus("e());
     }
     var positions = _C(exchange.GetPosition);
     if (positions.length > 0) {
-        Log("¼ì²âµ½µ±Ç°³ÖÓÐ²ÖÎ», ÏµÍ³½«¿ªÊ¼³¢ÊÔ»Ö¸´½ø¶È...");
-        Log("³Ö²ÖÐÅÏ¢", positions);
+        Log();
+        Log("itions);
     }
-    Log("·çÏÕÏµÊý:", RiskRatio, "NÖµÖÜÆÚ:", ATRLength, "ÏµÍ³1: ÈëÊÐÖÜÆÚ", EnterPeriodA, "ÀëÊÐÖÜÆÚ", LeavePeriodA, "ÏµÍ³¶þ: ÈëÊÐÖÜÆÚ", EnterPeriodB, "ÀëÊÐÖÜÆÚ", LeavePeriodB, "¼Ó²ÖÏµÊý:", IncSpace, "Ö¹ËðÏµÊý:", StopLossRatio, "µ¥Æ·ÖÖ×î¶à¿ª²Ö:", MaxLots, "´Î");
+    Log(":", RiskRatio, ";
     var initAccount = _bot.GetAccount();
     var initMargin = JSON.parse(exchange.GetRawJSON()).CurrMargin;
     var keepBalance = _N((initAccount.Balance + initMargin) * (KeepRatio/100), 3);
-    Log("×Ê²úÐÅÏ¢", initAccount, "±£Áô×Ê½ð:", keepBalance);
+    Log(":", keepBalance);
     
     var tts = [];
     var filter = [];
@@ -498,7 +497,7 @@ function main() {
     for (var i = 0; i < arr.length; i++) {
         var symbol = arr[i].replace(/^\s+/g, "").replace(/\s+$/g, "");
         if (typeof(filter[symbol]) !== 'undefined') {
-            Log(symbol, "ÒÑ¾­´æÔÚ, ÏµÍ³ÒÑ×Ô¶¯¹ýÂË");
+            Log(symbol, ";
             continue;
         }
         filter[symbol] = true;
@@ -517,27 +516,26 @@ function main() {
     var preTotalHold = -1;
     var lastStatus = '';
     while (true) {
-        if (GetCommand() === "ÔÝÍ£/¼ÌÐø") {
-            Log("ÔÝÍ£½»Ò×ÖÐ...");
-            while (GetCommand() !== "ÔÝÍ£/¼ÌÐø") {
+        if (GetCommand() === "") {
+            Log(.");
+            while (GetCommand() !== "") {
                 Sleep(1000);
             }
-            Log("¼ÌÐø½»Ò×ÖÐ...");
+            Log("..");
         }
         while (!exchange.IO("status")) {
             Sleep(3000);
-            LogStatus("ÕýÔÚµÈ´ýÓë½»Ò×·þÎñÆ÷Á¬½Ó, " + new Date() + "\n" + lastStatus);
+            LogStatus(", " + new Date() + "\n" + lastStatus);
         }
         var tblStatus = {
             type: "table",
-            title: "³Ö²ÖÐÅÏ¢",
-            cols: ["ºÏÔ¼Ãû³Æ", "³Ö²Ö·½Ïò", "³Ö²Ö¾ù¼Û", "³Ö²ÖÊýÁ¿", "³Ö²ÖÓ¯¿÷", "¼Ó²Ö´ÎÊý", "¿ª²Ö´ÎÊý", "Ö¹Ëð´ÎÊý", "³É¹¦´ÎÊý", "µ±Ç°¼Û¸ñ", "N"],
+            title: ",
+            cols: ["", "N"],
             rows: []
         };
         var tblMarket = {
             type: "table",
-            title: "ÔËÐÐ×´Ì¬",
-            cols: ["ºÏÔ¼Ãû³Æ", "ºÏÔ¼³ËÊý", "±£Ö¤½ðÂÊ", "½»Ò×Ê±¼ä", "ÖùÏß³¤¶È", "ÉÏÏß", "ÏÂÏß", "Ö¹Ëð¼Û", "ÀëÊÐ¼Û", "Òì³£ÃèÊö", "·¢ÉúÊ±¼ä"],
+            title: ",
             rows: []
         };
         var totalHold = 0;
@@ -551,8 +549,8 @@ function main() {
                 vmStatus[d.symbol] = d.vm;
                 holdSymbol++;
             }
-            tblStatus.rows.push([d.symbolDetail.InstrumentName, d.holdAmount == 0 ? '--' : (d.marketPosition > 0 ? '¶à' : '¿Õ'), d.holdPrice, d.holdAmount, d.holdProfit, Math.abs(d.marketPosition), d.open, d.st, d.cover, d.lastPrice, d.N]);
-            tblMarket.rows.push([d.symbolDetail.InstrumentName, d.symbolDetail.VolumeMultiple, _N(d.symbolDetail.LongMarginRatio, 4) + '/' + _N(d.symbolDetail.ShortMarginRatio, 4), (d.isTrading ? 'ÊÇ#0000ff' : '·ñ#ff0000'), d.recordsLen, d.upLine, d.downLine, d.stopPrice, d.leavePrice, d.lastErr, d.lastErrTime]);
+            tblStatus.rows.push([d.symbolDetail.InstrumentName, d.holdAmount == 0 ? '--' : (d.marketPosition > 0 ? 'å¤š' : 'ç©º'), d.holdPrice, d.holdAmount, d.holdProfit, Math.abs(d.marketPosition), d.open, d.st, d.cover, d.lastPrice, d.N]);
+            tblMarket.rows.push([d.symbolDetail.InstrumentName, d.symbolDetail.VolumeMultiple, _N(d.symbolDetail.LongMarginRatio, 4) + '/' + _N(d.symbolDetail.ShortMarginRatio, 4), (d.isTrading ? #0000ff' : 'ff0000'), d.recordsLen, d.upLine, d.downLine, d.stopPrice, d.leavePrice, d.lastErr, d.lastErrTime]);
             totalHold += Math.abs(d.holdAmount);
         }
         var now = new Date();
@@ -562,13 +560,13 @@ function main() {
        
         if (tblAssets.rows.length > 10) {
             // replace AccountId
-            tblAssets.rows[0] = ["InitAccount", "³õÊ¼×Ê²ú", initAccount];
+            tblAssets.rows[0] = ["InitAccount", "", initAccount];
         } else {
-            tblAssets.rows.unshift(["NowAccount", "µ±Ç°¿ÉÓÃ", nowAccount], ["InitAccount", "³õÊ¼×Ê²ú", initAccount]);
+            tblAssets.rows.unshift(["NowAccount", "", nowAccount], ["InitAccount", ", initAccount]);
         }
-        lastStatus = '`' + JSON.stringify([tblStatus, tblMarket, tblAssets]) + '`\nÂÖÑ¯ºÄÊ±: ' + elapsed + ' ºÁÃë, µ±Ç°Ê±¼ä: ' + now.toLocaleString() + ', ÐÇÆÚ' + ['ÈÕ', 'Ò»', '¶þ', 'Èý', 'ËÄ', 'Îå', 'Áù'][now.getDay()] + ", ³ÖÓÐÆ·ÖÖ¸öÊý: " + holdSymbol;
+        lastStatus = '`' + JSON.stringify([tblStatus, tblMarket, tblAssets]) + '`\n ' + now.toLocaleString() + ',' + [' + ",  " + holdSymbol;
         if (totalHold > 0) {
-            lastStatus += "\nÊÖ¶¯»Ö¸´×Ö·û´®: " + JSON.stringify(vmStatus);
+            lastStatus += "\n " + JSON.stringify(vmStatus);
         }
         LogStatus(lastStatus);
         if (preTotalHold > 0 && totalHold == 0) {
